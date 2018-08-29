@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {MatTableDataSource, MatPaginator, MatSort, MatSnackBar} from '@angular/material';
-import {Menu} from '../models/menu';
+import {Menu} from '../models/Menu';
 import {MenuService} from './menu.service';
 import {map} from 'rxjs/operators';
 import {Router} from '@angular/router';

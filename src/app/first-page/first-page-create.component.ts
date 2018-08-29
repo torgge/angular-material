@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {MatPaginator, MatSort, MatSnackBar} from '@angular/material';
-import {Menu} from '../models/menu';
+import {Menu} from '../models/Menu';
 import {NgForm} from '@angular/forms';
 
 @Component({
