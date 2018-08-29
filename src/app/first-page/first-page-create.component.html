@@ -1,0 +1,22 @@
+<mat-card  class="my-card">
+  <mat-card-header>
+    <mat-card-title>Dados do Menu</mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content>
+    <form  class="my-form" (ngSubmit)="newMenu()">
+      <mat-form-field>
+        <mat-label>Email</mat-label>
+        <input  matInput name="email" required>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>First Name</mat-label>
+        <input  matInput name="firstName" required>
+      </mat-form-field>
+    </form>
+  </mat-card-content>
+  <mat-card-actions>
+    <button  mat-raised-button (click)="newMenu()"  color="primary">Novo</button>
+    <button  mat-raised-button (click)="createMenu()"  color="primary">Salvar</button>
+  </mat-card-actions>
+</mat-card>

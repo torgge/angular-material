@@ -1,52 +1,41 @@
-import { Component, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {MatTableDataSource, MatPaginator, MatSort, MatSnackBar} from '@angular/material';
-import {Customer} from '../models/customer';
+import {Menu} from '../models/menu';
+import {MenuService} from './menu.service';
+import {map} from 'rxjs/operators';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-first-page',
   templateUrl: './first-page.component.html',
   styleUrls: ['./first-page.component.css']
 })
-export class FirstPageComponent implements OnInit {
+export class FirstPageComponent implements OnInit, AfterViewInit {
 
-  customers: Customer[] = [
-    { id: 1, name: 'Customer 001', job: 'Programmer'},
-    { id: 2, name: 'Customer 002', job: 'Programmer'},
-    { id: 3, name: 'Customer 003', job: 'Programmer'},
-    { id: 4, name: 'Customer 004', job: 'Programmer'},
-    { id: 5, name: 'Customer 005', job: 'Programmer'},
-    { id: 6, name: 'Customer 006', job: 'Programmer'},
-    { id: 7, name: 'Customer 007', job: 'Programmer'},
-    { id: 8, name: 'Customer 008', job: 'Programmer'},
-    { id: 9, name: 'Customer 009', job: 'Programmer'},
-    { id: 10, name: 'Customer 010', job: 'Programmer'},
-    { id: 11, name: 'Customer 011', job: 'Programmer'},
-    { id: 12, name: 'Customer 012', job: 'Programmer'},
-    { id: 13, name: 'Customer 013', job: 'Programmer'},
-    { id: 14, name: 'Customer 014', job: 'Programmer'},
-
-  ];
+  _menus: Array<Menu>;
+  _menu: Menu = new Menu();
 
   loading = true;
 
-  dataSource = new MatTableDataSource<Customer>(this.customers);
+  dataSource = new MatTableDataSource<Menu>(this._menus);
 
-  displayedColumns = ['id', 'name', 'job', 'operations'];
-  pageSize = 4;
+  displayedColumns = ['key', 'email', 'firstName', 'operations'];
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  constructor(public snackBar: MatSnackBar) {}
+  constructor(public snackBar: MatSnackBar,
+              private menuService: MenuService,
+              private router: Router
+  ) {}
 
-  deleteCustomer(id) {
-
-    const snackBarRef = this.snackBar.open(`Deleting customer #${id}`);
+  deleteMenu(id) {
+    const snackBarRef = this.snackBar.open(`Deletando Menu #${id}`);
   }
 
-  editCustomer(id) {
-    const snackBarRef = this.snackBar.open(`Editing customer #${id}`);
-
+  editMenu(id) {
+    const snackBarRef = this.snackBar.open(`Editando Menu #${id}`);
+    this.router.navigateByUrl('first-page-create', );
   }
 
   ngAfterViewInit() {
@@ -61,14 +50,14 @@ export class FirstPageComponent implements OnInit {
 
     }, 2000);
 
-    /*this.dataService.getCustomers(this.startIndex,this.endIndex).subscribe((d: Customer[])=>{
-
-      this.dataSource.data = d;
-      this.loading = false;
-
-    });*/
-
-
-
+    this.menuService.getCustomersList()
+      .snapshotChanges()
+      .pipe(map(changes =>
+          changes.map(c => ({key: c.payload.key, ...c.payload.val()}))
+        )
+      ).subscribe(data => {
+      this._menus = data;
+      this.dataSource.data = this._menus;
+    });
   }
 }
